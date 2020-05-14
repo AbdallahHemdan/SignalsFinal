@@ -97,8 +97,6 @@ cv2.destroyAllWindows()
 
 # Step 3
 inputImage = reRange(inputImage)
-imageCompression(inputImage, m, row, col)
-
 
 # Step 8
 outImage = imageCompression(inputImage, m, row, col)
