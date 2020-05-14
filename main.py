@@ -10,9 +10,9 @@ import cv2
 # 3. Convert range of each component to [-128, 127] => Done
 # 4. Form a matrix for the outImage with the new size => Done
 # 5. Process each color component in blocks of 8×8 pixels. => Done
-# 6. Obtain 2D DCT of each block.
-# 7. Retain only the top left square of the 2D DCT coefficients of size 𝑚 × 𝑚, The rest of coefficients are ignored.
-# 8. Compare the size of the original and compressed images.
+# 6. Obtain 2D DCT of each block. => Done
+# 7. Retain only the top left square of the 2D DCT coefficients of size 𝑚 × 𝑚, The rest of coefficients are ignored. => Done
+# 8. Compare the size of the original and compressed images. => Done
 # 9. Decompress the image by applying inverse 2D DCT to each block. Display the image.
 
 
@@ -65,6 +65,7 @@ def getComponent(inputImage, no):
 
 # Step 1
 inputImage = cv2.imread('./image1.bmp')
+np.save("inputImage", inputImage)
 
 row = inputImage.shape[0]
 col = inputImage.shape[1]
@@ -102,5 +103,4 @@ imageCompression(inputImage, m, row, col)
 # Step 8
 outImage = imageCompression(inputImage, m, row, col)
 print("Output Image", outImage)
-np.save("inputImage", inputImage)
 np.save("outImage", outImage)
