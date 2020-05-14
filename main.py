@@ -7,11 +7,28 @@ import cv2
 
 # 1. Read the image file ‘image1.bmp’. => Done
 # 2. Extract and display each of its three color components. => Done
-# 3. process each color component in blocks of 8×8 pixels.
-# 4. Obtain 2D DCT of each block.
-# 5. Retain only the top left square of the 2D DCT coefficients of size 𝑚 × 𝑚, The rest of coefficients are ignored.
-# 6. Compare the size of the original and compressed images.
-# 7. Decompress the image by applying inverse 2D DCT to each block. Display the image.
+# 3. Convert range of each component to [-128, 127] => Done
+# 4. Form a matrix for the outImage with the new size => Done
+# 5. Process each color component in blocks of 8×8 pixels.
+# 6. Obtain 2D DCT of each block.
+# 7. Retain only the top left square of the 2D DCT coefficients of size 𝑚 × 𝑚, The rest of coefficients are ignored.
+# 8. Compare the size of the original and compressed images.
+# 9. Decompress the image by applying inverse 2D DCT to each block. Display the image.
+
+
+# Step 3
+def reRange(inputImage):
+    print("inputImage before", inputImage)
+    inputImage = inputImage.astype('int')
+    inputImage -= 128
+    print("inputImage after", inputImage)
+    return inputImage
+
+
+def imageCompression(inputImage, m, row, col):
+    # Step 4
+    outImage = np.zeros(
+        (int((row / 8) * m), int((col / 8) * m), 3), dtype=np.float16)
 
 
 # Step 2
@@ -56,3 +73,7 @@ redComponent = getComponent(inputImage, 0)
 cv2.imshow("Blue Component", redComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+# Step 3
+inputImage = reRange(inputImage)
+imageCompression(inputImage, m, row, col)
