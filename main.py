@@ -7,16 +7,26 @@ import cv2
 
 # 1. Read the image file ‘image1.bmp’. => Done
 # 2. Extract and display each of its three color components. => Done
-# 3. Form a matrix for the outImage with the new size => Done
-# 4. Process each color component in blocks of 8×8 pixels. => Done
-# 5. Obtain 2D DCT of each block. => Done
-# 6. Retain only the top left square of the 2D DCT coefficients of size 𝑚 × 𝑚, The rest of coefficients are ignored. => Done
-# 7. Compare the size of the original and compressed images. => Done
-# 8. Decompress the image by applying inverse 2D DCT to each block. Display the image.
+# 3. Convert range of each component to [-128, 127] => Done
+# 4. Form a matrix for the outImage with the new size => Done
+# 5. Process each color component in blocks of 8×8 pixels. => Done
+# 6. Obtain 2D DCT of each block. => Done
+# 7. Retain only the top left square of the 2D DCT coefficients of size 𝑚 × 𝑚, The rest of coefficients are ignored. => Done
+# 8. Compare the size of the original and compressed images. => Done
+# 9. Decompress the image by applying inverse 2D DCT to each block. Display the image.
+
+
+# Step 3
+def reRange(inputImage):
+    print("inputImage before", inputImage)
+    inputImage = inputImage.astype('int')
+    inputImage -= 128
+    print("inputImage after", inputImage)
+    return inputImage
 
 
 def imageCompression(inputImage, m, row, col):
-    # Step 3
+    # Step 4
     outImage = np.zeros(
         (int((row / 8) * m), int((col / 8) * m), 3), dtype=np.float16)
 
@@ -25,14 +35,14 @@ def imageCompression(inputImage, m, row, col):
     blockComponents = 3
     noIterations = 0
 
-    # Step 4
+    # Step 5
     for x in range(0, blockRow):
         for y in range(0, blockCol):
             for z in range(0, blockComponents):
                 noIterations += 1
                 currentBlock = inputImage[x *
                                           8: x * 8 + 8, y * 8: y * 8 + 8, z]
-                # Step 5, 6
+                # Step 6, 7
                 blockDCT = dct(dct(currentBlock.T, norm='ortho').T,
                                norm='ortho')[0:m, 0:m]
                 outImage[x * m: x * m + m, y * m: y * m + m, z] = blockDCT
@@ -68,8 +78,8 @@ cv2.destroyAllWindows()
 
 # Step 2
 # Get Red Component
-redComponent = getComponent(inputImage, 2)
-cv2.imshow("Red Component", redComponent)
+blueComponent = getComponent(inputImage, 2)
+cv2.imshow("Red Component", blueComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
@@ -80,13 +90,15 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # Get Blue Component
-blueComponent = getComponent(inputImage, 0)
-cv2.imshow("Blue Component", blueComponent)
+redComponent = getComponent(inputImage, 0)
+cv2.imshow("Blue Component", redComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+# Step 3
+inputImage = reRange(inputImage)
 
-# Step 7
+# Step 8
 outImage = imageCompression(inputImage, m, row, col)
 print("Output Image", outImage)
 np.save("outImage", outImage)
