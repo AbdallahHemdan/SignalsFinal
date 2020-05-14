@@ -68,8 +68,8 @@ cv2.destroyAllWindows()
 
 # Step 2
 # Get Red Component
-blueComponent = getComponent(inputImage, 2)
-cv2.imshow("Red Component", blueComponent)
+redComponent = getComponent(inputImage, 2)
+cv2.imshow("Red Component", redComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
@@ -80,8 +80,8 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # Get Blue Component
-redComponent = getComponent(inputImage, 0)
-cv2.imshow("Blue Component", redComponent)
+blueComponent = getComponent(inputImage, 0)
+cv2.imshow("Blue Component", blueComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
