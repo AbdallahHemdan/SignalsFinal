@@ -1,4 +1,5 @@
 from scipy.fft import dct ,idct
+from math import  log10 ,sqrt
 import numpy as np
 import cv2
 
@@ -23,7 +24,8 @@ import cv2
 #   2.5 apply inverse dct on each block=>Done
 #   2.6 re-range the out image by adding 128 ranges from [0 : 255] => Done
 #   2.7 display the decompressed image and Compare them => Done
-#   2.8 quality of the decompressed image is measured using the Peak Signal-to-Noise Ratio PSNR)
+#   2.8 quality of the decompressed image is measured using the Peak Signal-to-Noise Ratio PSNR) implementation => Done
+#   2.9 display PSNR for each m
 #   2.9 technical report (advantages of using DCT instead of DFT)
 
 
@@ -112,6 +114,14 @@ def imageDeCompression(toBeCompressedImage ,m , row ,col):
     return deCompressedImage
 
 
+# Step 2.8
+def getPSNR(original, compressed):
+
+    MSE = np.mean((original - compressed) ** 2)
+    max_pixel = 255.0
+    PSNR = 10 * log10((max_pixel*max_pixel) / MSE)
+    return PSNR
+
 
 # Step 1.1
 inputImage = cv2.imread('./image1.bmp')
@@ -175,3 +185,7 @@ cv2.imshow("deCompressed Image", deCompressedImage)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+# Step 2.9
+inputImage = cv2.imread('./image1.bmp')
+PSNR = getPSNR(inputImage, deCompressedImage)
+print("PSNR", PSNR)
