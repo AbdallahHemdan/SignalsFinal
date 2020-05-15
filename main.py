@@ -19,10 +19,10 @@ import cv2
 #   2.1 load the out-image=>Done
 #   2.2 display the compressed image=>Done
 #   2.3 Form a matrix for the deCompressed image with the original size => Done
-#   2.4 Get each block of to be decompressed.
-#   2.5 apply inverse dct on each block
-#   2.6 re-range the out image by adding 128 ranges from [0 : 255]
-#   2.7 display the decompressed image and Compare them
+#   2.4 Get each block of to be decompressed.=>Done
+#   2.5 apply inverse dct on each block=>Done
+#   2.6 re-range the out image by adding 128 ranges from [0 : 255] => Done
+#   2.7 display the decompressed image and Compare them => Done
 #   2.8 quality of the decompressed image is measured using the Peak Signal-to-Noise Ratio PSNR)
 #   2.9 technical report (advantages of using DCT instead of DFT)
 
@@ -73,10 +73,20 @@ def imageCompression(inputImage, m, row, col):
     return outImage
 
 
+# implement 2D IDCT
+def idct2(a):
+    return idct(idct(a.T, norm='ortho').T, norm='ortho')
+# step 2.6
+def deReRange(deCopressedImage):
+
+    deCopressedImage += 128
+    deCopressedImage = deCopressedImage.astype('int')
+    return deCopressedImage
+
 
 def imageDeCompression(toBeCompressedImage ,m , row ,col):
     # Step 2.3
-    deCompressedImage = np.zeros(int((row/m)*8, int((col/m)*8)), 3, dtype=np.float16)
+    deCompressedImage = np.zeros((int((row / m) * 8), int((col / m) * 8), 3), dtype=np.float16)
 
     blockRow = int(row / m)
     blockCol = int(col / m)
@@ -87,10 +97,21 @@ def imageDeCompression(toBeCompressedImage ,m , row ,col):
     for x in range(0, blockRow):
         for y in range(0, blockCol):
             for z in range(0, blockComponents):
+
                 noIterations += 1
                 currentBlock = toBeCompressedImage[x * m: x * m + m, y * m: y * m + m, z]
-                deCompressedBlock = np.zeros(8, 8, 3)
-                deCompressedBlock[0: m, 0: m, 0]
+                deCompressedBlock = np.zeros((int(8), int(8)), dtype=np.float16)
+                deCompressedBlock[0: m, 0: m] = currentBlock
+
+                # Step 2.5
+                blockIDCT = idct2(deCompressedBlock)
+                deCompressedImage[x*8:x*8+8, y*8:y*8+8, z] = blockIDCT
+
+     # Step 2.6
+    deCompressedImage =deReRange(deCompressedImage)
+    return deCompressedImage
+
+
 
 # Step 1.1
 inputImage = cv2.imread('./image1.bmp')
@@ -141,3 +162,16 @@ toBeCompressedImage = np.load("outImage.npy")
 print("decompressed", toBeCompressedImage)
 deRow = toBeCompressedImage.shape[0]
 deCol = toBeCompressedImage.shape[1]
+
+deCompressedImage = imageDeCompression(toBeCompressedImage, m, deRow, deCol)
+print("deCompressedImage", deCompressedImage)
+print("inputImage", inputImage)
+print(deCompressedImage.shape[0], deCompressedImage.shape[1])
+
+# Step 2.7
+cv2.imwrite("deCompressedImage.png", deCompressedImage)
+deCompressedImage = cv2.imread("./deCompressedImage.png")
+cv2.imshow("deCompressed Image", deCompressedImage)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
