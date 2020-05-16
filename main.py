@@ -1,5 +1,5 @@
 from scipy.fft import dct ,idct
-from math import  log10 ,sqrt
+from math import  log10
 import numpy as np
 import cv2
 
