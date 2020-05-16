@@ -25,7 +25,7 @@ import cv2
 #   2.6 re-range the out image by adding 128 ranges from [0 : 255] => Done
 #   2.7 display the decompressed image and Compare them => Done
 #   2.8 quality of the decompressed image is measured using the Peak Signal-to-Noise Ratio PSNR) implementation => Done
-#   2.9 display PSNR for each m
+#   2.9 display PSNR for each m => Done
 #   2.9 technical report (advantages of using DCT instead of DFT)
 
 
@@ -138,13 +138,15 @@ cv2.destroyAllWindows()
 
 # Step 1.2
 # Get Red Component
-blueComponent = getComponent(inputImage, 2)
-cv2.imshow("Red Component", blueComponent)
+redComponent = getComponent(inputImage, 2)
+cv2.imwrite("redComponent.bmp", redComponent)
+cv2.imshow("Red Component", redComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # Get Green Component
 greenComponent = getComponent(inputImage, 1)
+cv2.imwrite("greenComponent.bmp", greenComponent)
 cv2.imshow("Green Component", greenComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
@@ -152,8 +154,9 @@ cv2.destroyAllWindows()
 
 
 # Get Blue Component
-redComponent = getComponent(inputImage, 0)
-cv2.imshow("Blue Component", redComponent)
+blueComponent = getComponent(inputImage, 0)
+cv2.imwrite("blueComponent.bmp", blueComponent)
+cv2.imshow("Blue Component", blueComponent)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
@@ -179,13 +182,15 @@ print("inputImage", inputImage)
 print(deCompressedImage.shape[0], deCompressedImage.shape[1])
 
 # Step 2.7
-cv2.imwrite("deCompressedImage.png", deCompressedImage)
-deCompressedImage = cv2.imread("./deCompressedImage.png")
+cv2.imwrite("deCompressedImage.bmp", deCompressedImage)
+deCompressedImage = cv2.imread("./deCompressedImage.bmp")
 cv2.imshow("deCompressed Image", deCompressedImage)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # Step 2.9
 inputImage = cv2.imread('./image1.bmp')
+deCompressedImage = cv2.imread("./deCompressedImage.bmp")
 PSNR = getPSNR(inputImage, deCompressedImage)
 print("PSNR", PSNR)
+
