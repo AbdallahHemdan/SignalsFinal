@@ -67,4 +67,4 @@
  
 
 ## License
-> This software is licensed under MIT License, See [License](https://github.com/AbdallahHemdan/SingalsFinal/blob/master/LICENSE) for more information ©AbdallahHemdan.
+> This software is licensed under MIT License, See [License](https://github.com/AbdallahHemdan/SignalsFinal/blob/master/LICENSE) for more information ©AbdallahHemdan.
